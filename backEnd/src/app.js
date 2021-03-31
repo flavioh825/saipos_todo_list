@@ -5,18 +5,13 @@ const Database = require('./database');
 class App {
   constructor() {
     this.server = express();
-
-    this.database(); // inicializa o database
+    this.server.use(express.json());
     this.routes(); // inicializa as rotas
   }
 
-  database() {
-    return new Database();
-  }
-
   routes() {
-    this.server.use(routes);
+    this.server.use('/api/v1', routes); // rotas a partir de /api/v1
   }
 }  
 
-module.exports = new App().server;
+module.exports = new App();

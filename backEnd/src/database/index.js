@@ -1,17 +1,24 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 
 class Database {
-  constructor() {
-    this.init()
-  }
 
-  init() {
-    return mysql.createConnection({
+  async connect(){
+    if(global.connection && global.connection.state !== 'disconnected') {
+        return global.connection;
+    }
+
+    const connection = await mysql.createConnection({
       host: 'localhost',
       user: 'root',
-      database: 'saipos_test'
+      database: 'saipos_test',
+      password: ""
     });
+
+    console.log("MySQL connected!");
+    
+    global.connection = connection;
+    return connection;
   }
 }
 
-module.exports = Database;
+module.exports = new Database();
