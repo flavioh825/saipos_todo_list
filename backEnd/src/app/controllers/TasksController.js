@@ -7,7 +7,7 @@ class TasksController {
   async index(req, res) { 
     try {
       let [ row ] = await Task.get();
-      return res.status(200).json({data: row});
+      return res.status(200).json(row);
     } catch(err) {
       return res.status(404).json(err);
     }
@@ -68,8 +68,6 @@ class TasksController {
     try {
       let [ data ] = await Task.getById(req.params.id);
 
-      console.log(data[0].done === null);
-
       if(data[0].done !== null)
         return res.status(303).json({error: 'Essa tarefa já foi concluída.'});
       
@@ -79,7 +77,7 @@ class TasksController {
       
       let [task] = await Task.getById(data[0].id);
 
-      return res.status(200).json({data: {success: true, task}});
+      return res.status(200).json({success: true, task});
     } catch(err) {
       return res.status(303).json({error: 'Algo deu errado'});
     }
@@ -103,7 +101,7 @@ class TasksController {
       
       let [task] = await Task.getById(data[0].id);
 
-      return res.status(200).json({data: {success: true, task}});
+      return res.status(200).json({success: true, task});
     } catch(err) {
       return res.status(303).json({error: 'Algo deu errado'});
     }
@@ -119,9 +117,9 @@ class TasksController {
     let email = req.params.email;
     let { mx_found, format_valid, did_you_mean } =  await Auth.validateEmail(email);
     if(!mx_found || !format_valid)
-      return res.status(401).json({data: {email_invalid: {did_you_mean: did_you_mean}}})
+      return res.status(401).json({did_you_mean})
 
-    return res.status(200).json({data: {success: true}});
+    return res.status(200).json({success: true});
   }
 }
 

@@ -4,7 +4,8 @@ class Task {
 
   async get() {
     const conn = await db.connect();
-    let sql = `SELECT id, description, owner, email, completed, done FROM tasks`;
+    let sql = `SELECT id, description, owner, email, completed, done 
+      FROM tasks ORDER BY id DESC`;
 
     return await conn.query(sql);
   }

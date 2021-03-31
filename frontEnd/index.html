@@ -1,160 +1,217 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="todo">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do List</title>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
 
-  <!-- bootstrap style -->
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
-  <!-- font-awesome 5 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
-  <!-- jquery -->
-  <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script>
-  <!-- bootstrapjs -->
-  <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
-  <!-- angularjs -->
-  <script type="text/javascript" src="assets/angular.min.js"></script>
-  <script type="text/javascript" src="src/todoController.js"></script>
+    <!-- bootstrap style -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <!-- font-awesome 5 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <!-- jquery -->
+    <script type="text/javascript" src="assets/js/jquery-3.6.0.min.js"></script>
+    <!-- bootstrapjs -->
+    <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+    <!-- angularjs -->
+    <script type="text/javascript" src="assets/angular.min.js"></script>
+    <script type="text/javascript" src="src/todoController.js"></script>
 
-</head>
-<body ng-controller="todoCtrl">
-  <div class="container">
-    <div class="row">
-      <h3>To-Do List</h3>
-    </div>
-    <!-- tab buttons -->
-    <div class="row">
-      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Tarefas Pendentes</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Tarefas Concluídas</a>
-        </li>
-      </ul>
-    </div>
-    <!-- tab buttons -->
-    <div class="tab-content" id="pills-tabContent">
-      <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-        <div class="row">
-          <div class="col-12">
-            <button type="button" class="btn btn-primary m-2" data-toggle="modal" data-target="#formTarefa">
-              <i class="fas fa-plus"></i>
-              Adicionar tarefa
-            </button>
-            <button type="button" class="btn btn-success m-2" data-toggle="modal" data-target="#formTarefa">
-              <i class="fas fa-edit"></i>
-              Editar tarefa
-            </button>
-            <button type="button" class="btn btn-danger m-2">
-              <i class="fas fa-trash"></i>
-              Excluír tarefa
-            </button>
-            <button type="button" class="btn btn-info m-2">
-              <i class="fas fa-check"></i>
-              Concluír tarefa
-            </button>
+  </head>
+  <body ng-controller="todoCtrl">
+    <div class="container">
+      <div class="row">
+        <h3>To-Do List</h3>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-success" role="alert" ng-if="successMessage.success">
+            {{successMessage.message}}
           </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <ul class="list-group">
-              <li class="list-group-item">
-                <input type="checkbox" />
-                A second item
-              </li>
-              <li class="list-group-item">
-                <input type="checkbox" />
-                A third item
-              </li>
-              <li class="list-group-item">
-                <input type="checkbox" />
-                A fourth item
-              </li>
-              <li class="list-group-item">
-                <input type="checkbox" />
-                And a fifth one
-              </li>
-            </ul>
+          <div class="alert alert-danger" role="alert" ng-if="errorMessage.error">
+            {{errorMessage.message}}
           </div>
         </div>
       </div>
-      <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-        <div class="row">
-          <div class="col-12">
-            <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#formTarefa">
-              <i class="fas fa-redo-alt"></i>
-              Tornar pendente
-            </button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-12">
-            <ul class="list-group">
-              <li class="list-group-item">
-                <input type="checkbox" />
-                A second item
-              </li>
-              <li class="list-group-item">
-                <input type="checkbox" />
-                A third item
-              </li>
-              <li class="list-group-item">
-                <input type="checkbox" />
-                A fourth item
-              </li>
-              <li class="list-group-item">
-                <input type="checkbox" />
-                And a fifth one
-              </li>
-            </ul>
-          </div>
-        </div>
+      <!-- tab buttons -->
+      <div class="row">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Tarefas Pendentes</a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Tarefas Concluídas</a>
+          </li>
+        </ul>
       </div>
-    </div>
-  </div>
-
-  <!-- form modal -->
-  <div class="modal fade" id="formTarefa" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="staticBackdropLabel">Nova Tarefa</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
+      <!-- buttons -->
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+          <div class="row mb-2">
+            <div class="col-6">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formTarefa">
+                <i class="fas fa-plus"></i>
+                Adicionar tarefa
+              </button>
+            </div>
+            <div class="col-6">
+              <input ng-model="searchTasks" class="form-control" placeholder="Pesquisar tarefas pendentes." />
+            </div>
+          </div>
           <div class="row">
             <div class="col-12">
-              <form>
-                <div class="form-group">
-                  <label>Tarefa</label>
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label>Digite seu e-mail</label>
-                  <input type="text" class="form-control" />
-                </div>
-                <div class="form-group">
-                  <label>Nome do responsável</label>
-                  <input type="text" class="form-control" />
-                </div>
-                <button type="button" class="btn btn-primary btn-lg btn-block">
-                  <i class="fas fa-plus"></i>
-                  Adicionar tarefa
-                </button>
-              </form>
+              <table class="table table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th></th>
+                    <th>Descrição</th>
+                    <th>Responsável</th>
+                    <th>E-mail</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="task in taskList  | filter:searchTasks" ng-if="task.done === null">
+                    <td width="50" class="text-left">
+                      <button type="button" ng-click="completeTask(task.id)" class="btn btn-info" title="Concluír tarefa">
+                        <i class="fas fa-check"></i>
+                      </button>
+                    </td>
+                    <td>{{task.description}}</td>
+                    <td>{{task.owner}}</td>
+                    <td>{{task.email}}</td>
+                    <td width="50" class="text-right">
+                      <button type="button" class="btn btn-success" title="Excluir tarefa">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
+                    <td width="50" class="text-right">
+                      <button type="button" class="btn btn-danger" title="Excluir tarefa">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+          <div class="row">
+            <div class="col-6">
+              <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#formTarefa">
+                <i class="fas fa-redo-alt"></i>
+                Tornar pendente
+              </button>
+            </div>
+            <div class="col-6">
+              <input ng-model="searchTasks" class="form-control" placeholder="Pesquisar tarefas concluídas." />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <table class="table table-hover">
+                <thead class="thead-light">
+                  <tr>
+                    <th></th>
+                    <th>Descrição</th>
+                    <th>Responsável</th>
+                    <th>E-mail</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="task in taskList  | filter:searchTasks" ng-if="task.done !== null">
+                    <td width="50" class="text-left">
+                      <button type="button" class="btn btn-info" title="Concluír tarefa">
+                        <i class="fas fa-check"></i>
+                      </button>
+                    </td>
+                    <td>{{task.description}}</td>
+                    <td>{{task.owner}}</td>
+                    <td>{{task.email}}</td>
+                    <td width="50" class="text-right">
+                      <button type="button" class="btn btn-success" title="Excluir tarefa">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                    </td>
+                    <td width="50" class="text-right">
+                      <button type="button" class="btn btn-danger" title="Excluir tarefa">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</body>
+
+    <!-- form modal -->
+    <div class="modal fade" id="formTarefa" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Nova Tarefa</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="alert alert-success" role="alert" ng-if="formSuccessAlert">
+                  Salvo com sucesso!
+                </div>
+                <div class="alert alert-danger" role="alert" ng-if="formErrorAlert">
+                  Algo deu errado.
+                </div>
+                <form name="taskForm" ng-submit="saveTask()">
+                  {{ task | json }}
+                  <div class="form-group">
+                    <label>Tarefa</label>
+                    <input type="text" ng-model="task.description" class="form-control" required />
+                  </div>
+                  <div class="form-group">
+                    <label>
+                      Digite seu e-mail
+                      <i class="fas fa-check" ng-show="emailValid" style="color: #28a745"></i>
+                      <div class="spinner-border spinner-border-sm text-primary" ng-if="validating" role="status">
+                        <span class="sr-only">Loading...</span>
+                      </div>
+                    </label>
+                    <input 
+                      type="text" 
+                      ng-model="task.email"
+                      ng-blur="checkEmail()" 
+                      class="form-control" 
+                      required />
+                    <div class="alert alert-danger mt-1" role="alert" ng-if="!emailValid && invalidMailMessage !== null">
+                      Email inválido. Você quis dizer: {{ invalidMailMessage }}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Nome do responsável</label>
+                    <input type="text" ng-model="task.owner" class="form-control" required />
+                  </div>
+                  <button type="submit" ng-disabled="taskForm.$invalid" class="btn btn-primary btn-lg btn-block">
+                    <i class="fas fa-plus"></i>
+                    Adicionar tarefa
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
