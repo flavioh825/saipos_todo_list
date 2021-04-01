@@ -17,6 +17,8 @@
     <!-- angularjs -->
     <script type="text/javascript" src="assets/angular.min.js"></script>
     <script type="text/javascript" src="src/todoController.js"></script>
+    <script type="text/javascript" src="src/components/redo-task-modal.component.js"></script>
+    <script type="text/javascript" src="src/components/form-task-modal.component.js"></script>
 
   </head>
   <body ng-controller="todoCtrl">
@@ -50,7 +52,7 @@
         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
           <div class="row mb-2">
             <div class="col-6">
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formTarefa">
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formTarefa" ng-click="resetTask()">
                 <i class="fas fa-plus"></i>
                 Adicionar tarefa
               </button>
@@ -72,8 +74,8 @@
                     <th></th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr ng-repeat="task in taskList  | filter:searchTasks" ng-if="task.done === null">
+                <tbody ng-if="taskListPending.length > 0">
+                  <tr ng-repeat="task in taskListPending  | filter:searchTasks" ng-if="task.done === null">
                     <td width="50" class="text-left">
                       <button type="button" ng-click="completeTask(task.id)" class="btn btn-info" title="Concluír tarefa">
                         <i class="fas fa-check"></i>
@@ -94,17 +96,36 @@
                     </td>
                   </tr>
                 </tbody>
+                <tbody ng-if="taskListPending.length === 0">
+                  <tr ng-repeat="fact in catFactsList | filter:searchTasks">
+                    <td width="50" class="text-left">
+                      <button type="button" ng-click="popCatFact($index)" class="btn btn-info" title="Concluír tarefa">
+                        <i class="fas fa-check"></i>
+                      </button>
+                    </td>
+                    <td>{{fact.description}}</td>
+                    <td>{{fact.owner}}</td>
+                    <td>{{fact.email}}</td>
+                    <td width="50" class="text-right">
+                    </td>
+                    <td width="50" class="text-right">
+                    </td>
+                  </tr>
+                  <tr ng-if="catFactsList.length === 0">
+                    <td colspan="6" class="text-center">
+                      <button type="button" ng-click="realeaseCatFacts()" class="btn btn-primary" title="Estou sem tarefas">
+                        Estou sem tarefas
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
         </div>
         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-          <div class="row">
+          <div class="row mb-2">
             <div class="col-6">
-              <button type="button" class="btn btn-warning m-2" data-toggle="modal" data-target="#formTarefa">
-                <i class="fas fa-redo-alt"></i>
-                Tornar pendente
-              </button>
             </div>
             <div class="col-6">
               <input ng-model="searchTasks" class="form-control" placeholder="Pesquisar tarefas concluídas." />
@@ -119,30 +140,18 @@
                     <th>Descrição</th>
                     <th>Responsável</th>
                     <th>E-mail</th>
-                    <th></th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr ng-repeat="task in taskList  | filter:searchTasks" ng-if="task.done !== null">
+                  <tr ng-repeat="task in taskListCompleted | filter:searchTasks">
                     <td width="50" class="text-left">
-                      <button type="button" class="btn btn-info" title="Concluír tarefa">
-                        <i class="fas fa-check"></i>
+                      <button type="button" ng-click="selectTask(task)" class="btn btn-warning" title="Concluír tarefa" data-toggle="modal" data-target="#redoTask">
+                        <i class="fas fa-redo-alt"></i>
                       </button>
                     </td>
                     <td>{{task.description}}</td>
                     <td>{{task.owner}}</td>
                     <td>{{task.email}}</td>
-                    <td width="50" class="text-right">
-                      <button type="button" class="btn btn-success" title="Excluir tarefa">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </td>
-                    <td width="50" class="text-right">
-                      <button type="button" class="btn btn-danger" title="Excluir tarefa">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -152,66 +161,9 @@
       </div>
     </div>
 
-    <!-- form modal -->
-    <div class="modal fade" id="formTarefa" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="staticBackdropLabel">Nova Tarefa</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-12">
-                <div class="alert alert-success" role="alert" ng-if="formSuccessAlert">
-                  Salvo com sucesso!
-                </div>
-                <div class="alert alert-danger" role="alert" ng-if="formErrorAlert">
-                  Algo deu errado.
-                </div>
-                <form name="taskForm" ng-submit="saveTask()">
-                  {{ task | json }}
-                  <div class="form-group">
-                    <label>Tarefa</label>
-                    <input type="text" ng-model="task.description" class="form-control" required />
-                  </div>
-                  <div class="form-group">
-                    <label>
-                      Digite seu e-mail
-                      <i class="fas fa-check" ng-show="emailValid" style="color: #28a745"></i>
-                      <div class="spinner-border spinner-border-sm text-primary" ng-if="validating" role="status">
-                        <span class="sr-only">Loading...</span>
-                      </div>
-                    </label>
-                    <input 
-                      type="text" 
-                      ng-model="task.email"
-                      ng-blur="checkEmail()" 
-                      class="form-control" 
-                      required />
-                    <div class="alert alert-danger mt-1" role="alert" ng-if="!emailValid && invalidMailMessage !== null">
-                      Email inválido. Você quis dizer: {{ invalidMailMessage }}
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Nome do responsável</label>
-                    <input type="text" ng-model="task.owner" class="form-control" required />
-                  </div>
-                  <button type="submit" ng-disabled="taskForm.$invalid" class="btn btn-primary btn-lg btn-block">
-                    <i class="fas fa-plus"></i>
-                    Adicionar tarefa
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <form-task-modal task="task" refresh-list="listTasks()"></form-task-modal>
+
+    <redo-task-modal task="task" refresh-list="listTasks()"></redo-task-modal>
+    
   </body>
 </html>
