@@ -5,7 +5,7 @@ Desafio saipos desenvolvido com nodejs no back-end, angularjs no front-end e ban
 
 ###### Para rodar:
 - instale o nodejs;
-- faça a importação do arquivo sql no banco de dados;
+- faça a importação do arquivo saipos_test.sql no banco de dados;
 - na pasta back-end rode o comando: npm install;
 - depois rode o comando npm start ou npm run dev;
 - no front-end clique em index.html.
