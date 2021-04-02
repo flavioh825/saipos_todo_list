@@ -58,18 +58,18 @@ class Task {
     return await conn.query(sql, id);
   }
 
-  async markAsComplete(completed, done, id) {
+  async markAsComplete(done, id) {
     const conn = await db.connect();
-    let values = [completed, done, id];
-    let sql = `UPDATE tasks SET completed=?, done=? WHERE id=?;`;
+    let values = [done, id];
+    let sql = `UPDATE tasks SET done=? WHERE id=?;`;
 
     return await conn.query(sql, values);
   }
 
-  async markAsPending(id) {
+  async markAsPending(completed, id) {
     const conn = await db.connect();
-    let values = [null, id];
-    let sql = `UPDATE tasks SET done=? WHERE id=?;`;
+    let values = [completed, null, id];
+    let sql = `UPDATE tasks SET completed=?, done=? WHERE id=?;`;
 
     return await conn.query(sql, values);
   }

@@ -47,7 +47,7 @@ angular.module('redoTaskModalComponent', [])
     controller: function($scope, $http) {
       const BASE_URL = `http://localhost:3333/api/v1`;
 
-      $scope.redoForm = {}
+      $scope.redoForm = {};
       $scope.success = false;
       $scope.error = false;
       $scope.errorMessage = null;
@@ -75,7 +75,6 @@ angular.module('redoTaskModalComponent', [])
         $scope.error = false;
         $scope.errorMessage = null;
         $scope.redoForm = {};
-        this.task = {};
       }
     }
   });

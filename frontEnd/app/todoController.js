@@ -24,6 +24,10 @@ angular.module('todo', ['formTaskModalComponent', 'redoTaskModalComponent'])
       $scope.task = task;
     }
 
+    $scope.resetTask = () => {
+      $scope.task = {};
+    }
+
     $scope.completeTask = (id) => {
       $http.post(`${BASE_URL}/tasks/complete/${id}`).then(res => {
         $scope.successMessage = { success: true, message: "Tarefa concluída!" };
@@ -53,10 +57,6 @@ angular.module('todo', ['formTaskModalComponent', 'redoTaskModalComponent'])
 
     $scope.popCatFact = (index) => {
       $scope.catFactsList.splice(index, 1);
-    }
-
-    $scope.resetTask = () => {
-      $scope.task = {};
     }
 
     $scope.listTasks();

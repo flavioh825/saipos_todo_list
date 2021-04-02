@@ -73,8 +73,6 @@
                     <th>Descrição</th>
                     <th>Responsável</th>
                     <th>E-mail</th>
-                    <th></th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody ng-if="taskListPending.length > 0">
@@ -87,16 +85,6 @@
                     <td>{{task.description}}</td>
                     <td>{{task.owner}}</td>
                     <td>{{task.email}}</td>
-                    <td width="50" class="text-right">
-                      <button type="button" class="btn btn-success" title="Excluir tarefa">
-                        <i class="fas fa-edit"></i>
-                      </button>
-                    </td>
-                    <td width="50" class="text-right">
-                      <button type="button" class="btn btn-danger" title="Excluir tarefa">
-                        <i class="fas fa-trash"></i>
-                      </button>
-                    </td>
                   </tr>
                 </tbody>
                 <tbody ng-if="taskListPending.length === 0">

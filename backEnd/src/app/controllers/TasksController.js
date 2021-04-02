@@ -46,7 +46,7 @@ class TasksController {
 
       let [task] = await Task.getById(data[0].id);
 
-      return res.status(200).json({data: task[0]});
+      return res.status(200).json(task[0]);
     } catch(err) {
       return res.status(303).json(err);
     }
@@ -56,9 +56,9 @@ class TasksController {
     try {
       let [ data ] = await Task.getById(req.params.id);
 
-      await Task.destroy(req.params.id);
+      await Task.destroy(data[0].id);
 
-      return res.status(200).json({data: {success: true}});
+      return res.status(200).json({success: true});
     } catch(err) {
       return res.status(303).json(err);
     }
@@ -71,9 +71,8 @@ class TasksController {
       if(data[0].done !== null)
         return res.status(303).json({error: 'Essa tarefa já foi concluída.'});
       
-      let completed = data[0].completed + 1;
       let done = format(new Date(), 'yyyy-MM-dd H:mm:ss');
-      await Task.markAsComplete(completed, done, data[0].id);
+      await Task.markAsComplete(done, data[0].id);
       
       let [task] = await Task.getById(data[0].id);
 
@@ -87,7 +86,7 @@ class TasksController {
     try {
       let isAuthorized = Auth.checkPasswordAuthorization(req.body.password);
       if(!isAuthorized)
-        return res.status(401).json({data: {error: 'Senha incorreta.'}});
+        return res.status(401).json({error: 'Senha incorreta.'});
 
       let [ data ] = await Task.getById(req.body.id);
 
@@ -97,7 +96,8 @@ class TasksController {
       if(data[0].completed === 2)
         return res.status(303).json({error: 'Não autorizado, o número de conclusões dessa tarefa foi excedido.'});
 
-      await Task.markAsPending(data[0].id);
+      let completed = data[0].completed + 1;
+      await Task.markAsPending(completed, data[0].id);
       
       let [task] = await Task.getById(data[0].id);
 
